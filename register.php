@@ -9,13 +9,13 @@ print '<form action="regisztralas.php" method="POST" style="width: 20rem; height
 print '<label>Felhasználónév: </label>';
 print '<input required type="text" name="felhasznalo" ><br>';
 
-print '<input type="radio" id="MV" name="radio" value="MV">';
+print '<input type="radio" id="MV" name="radio" value="MV" checked>';
 print '<label for="MV">Munkavállaló</label><br>';
 
 print '<input type="radio" id="MC" name="radio" value="MC">';
 print '<label for="MC">Munkáltató</label><br>';
 
-print '<input type="radio" id="KC" name="radio" value="KC">';
+print '<input type="radio" id="KC" name="radio" value="KV">';
 print '<label for="KC">Közvetitő</label>';
 
 print '<input type="submit" value="Elküld"><br>';

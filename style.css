@@ -1,0 +1,117 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 20px;
+}
+
+body {
+    width: 100vh;
+    height: 100vh;
+    background-color: rgb(153, 152, 152);
+    color: white;
+}
+.nav {
+        height: 3rem;
+        width: 100vw;
+        position: fixed;
+        background-color: rgba(255, 255, 255, 0.15);
+
+}
+
+.list {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    list-style: none;
+    justify-content: center;
+}
+
+#li1 {
+    width: fit-content;
+    margin-right: 5rem;
+}
+
+#li2 {
+    width: fit-content;
+}
+
+#dataChange {
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+#logout {
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    justify-content: center;
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50rem; /* Could be more or less, depending on screen size */
+    height: 36rem;
+    position: relative;
+    top: 0.75rem;
+    border-radius: 0.75em;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+.formContainer {
+    position: relative;
+    width: 100%;
+    height: 98.25%;
+    background-color: rgba(71, 69, 69, 0.3);
+    top: 0rem;
+    display: grid;
+    justify-content: center;
+    border-radius: 0.5em;
+    
+}
+
+#changeSubmit {
+    cursor: pointer;
+    position: relative;
+    height: fit-content;
+}
+
+.dataForm {
+    display: grid;
+    justify-content: center;
+}
+
+label {
+    display: flex;
+    justify-content: center;
+}
