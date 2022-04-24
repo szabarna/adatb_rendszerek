@@ -21,5 +21,4 @@ if (!empty($piszkos_felhasznalonev) && !empty($piszkos_radio)) {
 	
 } 
 
-
 ?>

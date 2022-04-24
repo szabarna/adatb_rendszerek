@@ -12,6 +12,40 @@ body {
     background-color: rgb(153, 152, 152);
     color: white;
 }
+
+.login-wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+#login-form {
+    display: grid;
+    justify-content: center;
+    grid-template-rows: 2rem 2rem 2rem 2rem 2rem;
+    background-color: rgb(83, 77, 77);
+    padding: 3rem;
+    border-radius: 0.75rem;
+}
+
+#loginA1 {
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    width: fit-content;
+    justify-self: center;
+}
+
+#loginA2 {
+    margin-top: 1rem;
+    text-decoration: none;
+    color: white;
+    width: fit-content;
+    justify-self: center;
+}
+
 .nav {
         height: 3rem;
         width: 100vw;
