@@ -18,7 +18,7 @@ session_start();
     <div class="login-wrapper">
     <form action="bejelentkezes.php" id="login-form" method="POST">
         <label>Felhasználónév: </label>
-        <input required type="text" name="felhasznalo" ><br>
+        <input required type="text" maxlength="60" name="felhasznalo" ><br>
         <input type="submit" value="Elküld"><br>
         <a href="register.php" id="loginA1">Regisztrálás</a>
         <a href="index.php" id="loginA2">Log in as guest</a>

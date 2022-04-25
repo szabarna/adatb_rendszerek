@@ -4,7 +4,7 @@
 function db_connect() {
 	
 
-	$conn = oci_connect('szabarna', '1232', 'localhost/XE');
+	$conn = oci_connect('szabarna', '1232', 'localhost/XE', 'AL32UTF8');
 	if (!$conn) {
 		$e = oci_error($conn);
 		trigger_error($e['message'], 'EXT_QUOTES', E_USER_ERROR);
@@ -184,14 +184,16 @@ function regisztrálás($felhasznalonev, $radio) {
 	return false;
 }
 
-function mv_dataUpdate($username, $nem, $nev, $lakcim, $szul_datum) {
+function mv_dataUpdate($username, $nem, $nev, $lakcim, $szul_datum, $kat_megnevezes) {
 	
 	$conn = db_connect();
 	$alreadyUsed = false;
 	$datum = 'YYYY-MM-DD';
 	if ( $conn ) {
 			
-			$sql = 'UPDATE MUNKAVALLALO SET nem = :nem, nev = :nev, lakcim = :lakcim, szul_datum = to_date(:szul_datum, :datum)  WHERE username = :username';
+			$sql = 'UPDATE MUNKAVALLALO SET nem = :nem, nev = :nev, lakcim = :lakcim,
+			 szul_datum = to_date(:szul_datum, :datum), kat_id = (SELECT ID FROM MUNKAVALLALO_KATEGORIAK WHERE MEGNEVEZES = :kat_megnevezes)  
+			 WHERE username = :username';
 			$stid = oci_parse($conn, $sql);
 			oci_bind_by_name($stid, ':username', $username);
 			oci_bind_by_name($stid, ':nem', $nem);
@@ -199,6 +201,7 @@ function mv_dataUpdate($username, $nem, $nev, $lakcim, $szul_datum) {
 			oci_bind_by_name($stid, ':lakcim', $lakcim);
 			oci_bind_by_name($stid, ':szul_datum', $szul_datum);
 			oci_bind_by_name($stid, ':datum', $datum);
+			oci_bind_by_name($stid, ':kat_megnevezes', $kat_megnevezes);
 			$success = oci_execute($stid);
 			
 			if (!$stid) {
@@ -225,8 +228,8 @@ function mv_adatokat_listaz($username) {
 		$success = oci_execute($stid);
 
 		if (!$success) {
-			$e = oci_error($r);
-			trigger_error($e['message'], 
+			$e = oci_error($stid);
+			trigger_error($stid['message'], 
 				'EXT_QUOTES', E_USER_ERROR);
 		}
 	
@@ -239,7 +242,53 @@ function mv_adatokat_listaz($username) {
 	return false;
 }
 
+function mv_kategoriat_listaz($username) {
+	
+	$conn = db_connect();
+	$str = '';
+	if ( $conn ) {
 
+		$sql = 'SELECT (MEGNEVEZES) FROM MUNKAVALLALO_KATEGORIAK WHERE ID = (SELECT (kat_id) FROM MUNKAVALLALO WHERE username = :username)';
+		$stid = oci_parse($conn, $sql);
+		oci_bind_by_name($stid, ':username', $username);
+		$success = oci_execute($stid);
+	
+		if (!$success) {
+			$e = oci_error($stid);
+			trigger_error($e['message'], 
+				'EXT_QUOTES', E_USER_ERROR);
+		}
+
+		$userCategory = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS);
+		
+
+		
+		$sql = 'SELECT * FROM MUNKAVALLALO_KATEGORIAK';
+		$stid = oci_parse($conn, $sql);
+		$success = oci_execute($stid);
+	
+		if (!$success) {
+			$e = oci_error($stid);
+			trigger_error($e['message'], 
+				'EXT_QUOTES', E_USER_ERROR);
+		}
+		
+
+		while ( $row = oci_fetch_array($stid, 
+				OCI_ASSOC + OCI_RETURN_NULLS)  ){
+			
+			$str .= '<option ';
+			if(!empty($userCategory['MEGNEVEZES']) && $userCategory['MEGNEVEZES'] == $row['MEGNEVEZES']) $str .= 'selected';
+			$str .= ' value="';
+			$str .= $row['MEGNEVEZES'];
+			$str .= '">';
+			$str .= $row['MEGNEVEZES'];
+			$str .= '</option>';
+		}
+
+	}
+	return $str;
+}
 
 
 

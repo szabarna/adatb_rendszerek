@@ -143,6 +143,7 @@ body {
 .dataForm {
     display: grid;
     justify-content: center;
+    height: fit-content;
 }
 
 label {

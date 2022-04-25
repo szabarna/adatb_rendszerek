@@ -9,6 +9,10 @@
     $date = strtotime ( $tomb['SZUL_DATUM'] );
     $changeDate = date("Y-m-d", $date);
 
+     $kategoriak = mv_kategoriat_listaz($tiszta_felhasznalonev);
+
+     
+    
 ?>
 
 <!DOCTYPE html>
@@ -41,19 +45,26 @@
 
                     <label for="nem">Nem</label>
                     <br>
-                    <input required type="text" id="nem" name="nem" value="<?php echo $tomb['NEM'] ?>">
+                    <input required type="text" id="nem" name="nem" maxlength="10" value="<?php echo $tomb['NEM'] ?>">
 
                     <br>
                     <label for="nev">Név</label>
                     <br>
-                    <input required type="text" name="nev" id="nev" value="<?php echo $tomb['NEV'] ?>">
+                    <input required type="text" name="nev" id="nev" maxlength="18" value="<?php echo $tomb['NEV'] ?>">
 
                     <br>
                     <label for="lakcim">Lakcim</label>
                     <br>
-                    <input required type="text" name="lakcim" id="lakcim" value="<?php echo $tomb['LAKCIM'] ?>">
-
+                    <input required type="text" name="lakcim" id="lakcim" maxlength="50" value="<?php echo $tomb['LAKCIM'] ?>">
                     <br>
+
+                    <label for="MVcategory">Job type:</label>
+
+                    <select name="MVcategory" id="MVcategory">
+                        <?php print $kategoriak; ?>
+                    </select>
+
+                    <br>     
                     <label for="szuldate">Szül. Date</label>
                     <br>
                     <input required type="date" name="szuldate" id="szuldate" value="<?php echo $changeDate ?>">

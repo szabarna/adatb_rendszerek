@@ -6,6 +6,7 @@ $piszkos_nem = $_POST['nem'];
 $piszkos_nev = $_POST['nev'];
 $piszkos_lakcim = $_POST['lakcim'];
 $piszkos_szuldate = $_POST['szuldate'];
+$piszkos_kategoria = $_POST['MVcategory'];
 // 
 
 if (!empty($piszkos_nem) && !empty($piszkos_nev) && !empty($piszkos_lakcim) && !empty($piszkos_szuldate) && !empty($user)) {
@@ -15,9 +16,10 @@ if (!empty($piszkos_nem) && !empty($piszkos_nev) && !empty($piszkos_lakcim) && !
 	$tiszta_nev = htmlspecialchars($piszkos_nev);
     $tiszta_lakcim = htmlspecialchars($piszkos_lakcim);
 	$tiszta_szuldate = htmlspecialchars($piszkos_szuldate);
+	$tiszta_kategoria = htmlspecialchars($piszkos_kategoria);
 
 
-	$sikeres = mv_dataUpdate( $tiszta_felhasznalonev, $tiszta_nem, $tiszta_nev, $tiszta_lakcim, $tiszta_szuldate );
+	$sikeres = mv_dataUpdate( $tiszta_felhasznalonev, $tiszta_nem, $tiszta_nev, $tiszta_lakcim, $tiszta_szuldate, $tiszta_kategoria );
 	
 	if ( $sikeres == true) {
 		 header('Location: index_mv.php');

@@ -18,7 +18,7 @@ require_once('db.php');
     <form action="regisztralas.php" id="login-form" method="POST">
 
         <label>Felhasználónév: </label>
-        <input required type="text" name="felhasznalo">
+        <input required type="text" maxlength="60" name="felhasznalo">
         <br>
 
         <input type="radio" id="MV" name="radio" value="MV" checked>
@@ -34,7 +34,7 @@ require_once('db.php');
 
         <input type="submit" value="Elküld">
         <br>
-        <a href="login.php" id="loginA1">Bejelentkezés</a>
+        <a href="login.php" id="loginA2">Bejelentkezés</a>
     </form>
     </div>
 </body>
