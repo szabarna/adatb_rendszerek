@@ -9,7 +9,8 @@ if (!empty($piszkos_felhasznalonev)) {
 	$tiszta_felhasznalonev = htmlspecialchars($piszkos_felhasznalonev);
 	
 	$_SESSION['username'] = $tiszta_felhasznalonev;
-	
+	if($tiszta_felhasznalonev == 'admin') header('Location: ./admin/admin.php');
+
 	$sikeres = bejelentkezes( $tiszta_felhasznalonev );
 	
 	if ( $sikeres == true) {

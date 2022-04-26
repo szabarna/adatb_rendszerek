@@ -10,8 +10,9 @@
     $changeDate = date("Y-m-d", $date);
 
      $kategoriak = mv_kategoriat_listaz($tiszta_felhasznalonev);
-
-     
+     $szakmai_tapasztalatok = mv_szTapasztalat_listaz($tiszta_felhasznalonev);
+     $iskolai_vegzettsegek = mv_iskolazottsag_listaz($tiszta_felhasznalonev);
+     $cvData = mv_cv_listaz($tiszta_felhasznalonev);
     
 ?>
 
@@ -22,7 +23,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MUNKAVALLALO_MAIN</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style.css?version=51">
     
 </head>
 <body>
@@ -36,6 +37,23 @@
             </li>
         </ul>
     </nav>
+
+    <div class="jobsContainer">
+        
+      
+        <?php 
+             $munkak = mv_munkat_listaz();
+            print $munkak;
+        ?>
+    </div>
+
+    <div class="myJobsContainer">
+      
+        <?php 
+             $munkak = mv_felvettMunkat_listaz($tiszta_felhasznalonev);
+            print $munkak;
+        ?>
+    </div>
 
     <div id="myModal" class="modal">
         <div class="modal-content">
@@ -64,12 +82,29 @@
                         <?php print $kategoriak; ?>
                     </select>
 
+                    <label for="MViskolazottsag">Iskolázottság:</label>
+
+                    <select name="MViskolazottsag" id="MViskolazottsag">
+                        <?php print $iskolai_vegzettsegek; ?>
+                    </select>
+
+                    <label for="MVexperience">Szakmai tapasztalat:</label>
+
+                    <select name="MVexperience" id="MVexperience">
+                        <?php print $szakmai_tapasztalatok; ?>
+                    </select>
+
                     <br>     
                     <label for="szuldate">Szül. Date</label>
                     <br>
                     <input required type="date" name="szuldate" id="szuldate" value="<?php echo $changeDate ?>">
 
                     <br>
+                    <input type="submit" id="changeSubmit" value="Szerkesztés" name="logout">
+                </form>
+                <form action="onCVChange.php" method="POST" class="dataForm">
+                    <label for="cv">Önéletrajz</label>
+                    <textarea name="cv" id="cv" cols="30" rows="7.5" maxlength="250"><?php echo trim($cvData['REFERENCIA']) ?></textarea>
                     <input type="submit" id="changeSubmit" value="Szerkesztés" name="logout">
                 </form>
             </div>

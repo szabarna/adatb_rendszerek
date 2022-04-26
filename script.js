@@ -8,7 +8,7 @@ var btn = document.getElementById("dataChange");
 var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks on the button, open the modal
-console.log(btn);
+
 btn.onclick = function() {
   modal.style.display = "flex";
 }
