@@ -15,7 +15,7 @@ if (!empty($piszkos_felhasznalonev) && !empty($piszkos_radio)) {
 		print '<br>';
 		print '<a href="register.php">Vissza a regisztrációhoz</a>';
 	} else {
-		 header('Location: login.php');
+		 header('Location: index.php');
 	}
 
 	

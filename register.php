@@ -34,7 +34,7 @@ require_once('db.php');
 
         <input type="submit" value="Elküld">
         <br>
-        <a href="login.php" id="loginA2">Bejelentkezés</a>
+        <a href="index.php" id="loginA2">Bejelentkezés</a>
     </form>
     </div>
 </body>
