@@ -4,7 +4,7 @@
 function db_connect() {
 	
 
-	$conn = oci_connect('varmar', '4526', 'localhost/XE', 'AL32UTF8');
+	$conn = oci_connect('szabarna', '1232', 'localhost/XE', 'AL32UTF8');
 	if (!$conn) {
 		$e = oci_error($conn);
 		trigger_error($e['message'], 'EXT_QUOTES', E_USER_ERROR);
@@ -446,7 +446,7 @@ function mv_munkat_listaz() {
 	$counter = 1;
 	if ( $conn ) {
 
-		$sql = 'SELECT HELYSZIN, MUSZAK, LEIRAS, TIPUS, MC_ID FROM ALLAS_LEHETOSEG';
+		$sql = 'SELECT HELYSZIN, MUSZAK, LEIRAS, ALLAS_NEV, TIPUS, MC_ID FROM ALLAS_LEHETOSEG';
 		$stid = oci_parse($conn, $sql);
 		$success = oci_execute($stid);
 	
@@ -475,6 +475,7 @@ function mv_munkat_listaz() {
 			$str .= '<div class="job" id="job';
 			$str .= "$counter";
 			$str .= '">';
+			$str .= '<h1>' . $job['ALLAS_NEV'] . '</h1>';
 			$str .= '<h1>' . $job['TIPUS'] . '</h1>';
 			$str .= '<h2>' . $ceg_nevek['NEV'] . '</h2>';
 			$str .= '<h2>' . $job['HELYSZIN'] . '</h2>';
@@ -599,6 +600,7 @@ function mv_felvettMunkat_listaz($username) {
 			$str .= '<div class="job" id="job';
 			$str .= "$counter";
 			$str .= '">';
+			$str .= '<h1>' . $job['ALLAS_NEV'] . '</h1>';
 			$str .= '<h1>' . $job['TIPUS'] . '</h1>';
 			$str .= '<h2>' . $ceg_nevek['NEV'] . '</h2>';
 			$str .= '<h2>' . $job['HELYSZIN'] . '</h2>';
@@ -818,7 +820,7 @@ function mc_munkat_listaz() {
 	$counter = 1;
 	if ( $conn ) {
 
-		$sql = 'SELECT HELYSZIN, MUSZAK, LEIRAS, TIPUS, MC_ID FROM ALLAS_LEHETOSEG';
+		$sql = 'SELECT HELYSZIN, MUSZAK, LEIRAS, ALLAS_NEV,TIPUS, MC_ID FROM ALLAS_LEHETOSEG';
 		$stid = oci_parse($conn, $sql);
 		$success = oci_execute($stid);
 	
@@ -847,6 +849,7 @@ function mc_munkat_listaz() {
 			$str .= '<div class="job" id="job';
 			$str .= "$counter";
 			$str .= '">';
+			$str .= '<p>' . $job['ALLAS_NEV'] . '</p>';
 			$str .= '<p>' . $job['TIPUS'] . '</p>';
 			$str .= '<p>' . $ceg_nevek['NEV'] . '</p>';
 			$str .= '<p>' . $job['HELYSZIN'] . '</p>';
