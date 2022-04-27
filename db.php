@@ -439,15 +439,17 @@ function mv_iskolazottsag_listaz($username) {
 	return $str;
 }
 
-function mv_munkat_listaz() {
+function mv_munkat_listaz($username) {
 	
 	$conn = db_connect();
 	$str = '';
 	$counter = 1;
 	if ( $conn ) {
 
-		$sql = 'SELECT HELYSZIN, MUSZAK, LEIRAS, ALLAS_NEV, TIPUS, MC_ID FROM ALLAS_LEHETOSEG';
+		$sql = 'SELECT * FROM ALLAS_LEHETOSEG WHERE MC_ID NOT IN (SELECT MC_ADOSZAM FROM ALLAS_JELENTKEZES
+		 WHERE MV_ADOSZAM = (SELECT SZEMELY_SZAM FROM MUNKAVALLALO WHERE username = :username))';
 		$stid = oci_parse($conn, $sql);
+		oci_bind_by_name($stid, ':username', $username);
 		$success = oci_execute($stid);
 	
 		if (!$success) {
@@ -483,7 +485,9 @@ function mv_munkat_listaz() {
 			$str .= '<p class="p">' . $job['LEIRAS'] . '</p>';
 			$str .= '<form action="mv_jelentkezes.php" method="POST">';
 			$str .= '<input type="hidden" id="mc_id" name="mc_id" value="';
-			$str .= $job['MC_ID'] . '"><br>';
+			$str .= $job['MC_ID'] . '">';
+			$str .= '<input type="hidden" id="al_id" name="al_id" value="';
+			$str .= $job['ID'] . '">';
 			$str .= '<input type="submit" value="Jelentkezés">';
 			$str .= '</form>';
 			$str .= '</div>';
@@ -491,22 +495,25 @@ function mv_munkat_listaz() {
 			$counter += 1;
 		}
 
+		if($counter == 1) return "Nincs még állás lehetőség az adatbázisban!";
+
 	}
 	return $str;
 }
 
-function mv_job_jelentkezes($username, $mc_id) {
+function mv_job_jelentkezes($username, $mc_id, $al_id) {
 
 	$conn = db_connect();
 	$alreadyExist = false;
 	if ( $conn ) {
 		
 			
-			$sql = 'SELECT * FROM ALLAS_JELENTKEZES WHERE MC_ADOSZAM = :mc_id AND
+			$sql = 'SELECT * FROM ALLAS_JELENTKEZES WHERE MC_ADOSZAM = :mc_id AND ID = :al_id AND
 			MV_ADOSZAM = (SELECT SZEMELY_SZAM FROM MUNKAVALLALO WHERE username = :username)';
 			$stid = oci_parse($conn, $sql);
 			oci_bind_by_name($stid, ':username', $username);
 			oci_bind_by_name($stid, ':mc_id', $mc_id);
+			oci_bind_by_name($stid, ':al_id', $al_id);
 			$success = oci_execute($stid);
 			
 			if (!$stid) {
@@ -520,13 +527,15 @@ function mv_job_jelentkezes($username, $mc_id) {
 			if($row > 0) $alreadyExist = true;
 			// Ha még nincs ilyen jelentkezés akkor insertelünk egyet.
 			if(!$alreadyExist) {
-				$sql = 'INSERT INTO ALLAS_JELENTKEZES (MV_ADOSZAM, MC_ADOSZAM) VALUES (
+				$sql = 'INSERT INTO ALLAS_JELENTKEZES (MV_ADOSZAM, MC_ADOSZAM, AL_ID) VALUES (
 					(SELECT SZEMELY_SZAM FROM MUNKAVALLALO WHERE username = :username),
-					:mc_id
+					:mc_id,
+					:al_id
 				)';
 				$stid = oci_parse($conn, $sql);
 				oci_bind_by_name($stid, ':username', $username);
 				oci_bind_by_name($stid, ':mc_id', $mc_id);
+				oci_bind_by_name($stid, ':al_id', $al_id);
 				$success = oci_execute($stid);
 				
 				if (!$stid) {
@@ -550,7 +559,7 @@ function mv_felvettMunkat_listaz($username) {
 	$counter = 1;
 	if ( $conn ) {
 
-		$sql = 'SELECT mc_adoszam from allas_jelentkezes where mv_adoszam = (select szemely_szam from munkavallalo where username = :username)';
+		$sql = 'SELECT mc_adoszam, al_id from allas_jelentkezes where mv_adoszam = (select szemely_szam from munkavallalo where username = :username)';
 		$stid = oci_parse($conn, $sql);
 		oci_bind_by_name($stid, ':username', $username);
 		$success = oci_execute($stid);
@@ -563,15 +572,16 @@ function mv_felvettMunkat_listaz($username) {
 
 	
 
-		while ( $mc_adoszamok = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)  ){
+		while ( $AL_ADATOK = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)  ){
 			
 			
 
-			$sql = 'SELECT * from allas_lehetoseg where mc_id = (select mc_adoszam from allas_jelentkezes where
-			 mv_adoszam = (select szemely_szam from munkavallalo where username = :username) and mc_adoszam = :MC_ADOSZAM)';
+			$sql = 'SELECT * from allas_lehetoseg where id = :AL_ID and mc_id = (select mc_adoszam from allas_jelentkezes where
+			 mv_adoszam = (select szemely_szam from munkavallalo where username = :username) and mc_adoszam = :MC_ADOSZAM and al_id = :AL_ID)';
 			$stnewid = oci_parse($conn, $sql);
 			oci_bind_by_name($stnewid, ':username', $username);
-			oci_bind_by_name($stnewid, ':MC_ADOSZAM', $mc_adoszamok['MC_ADOSZAM']);
+			oci_bind_by_name($stnewid, ':MC_ADOSZAM', $AL_ADATOK['MC_ADOSZAM']);
+			oci_bind_by_name($stnewid, ':AL_ID', $AL_ADATOK['AL_ID']);
 			$success = oci_execute($stnewid);
 			
 			if (!$success) {
@@ -608,7 +618,9 @@ function mv_felvettMunkat_listaz($username) {
 			$str .= '<p class="p">' . $job['LEIRAS'] . '</p>';
 			$str .= '<form action="mv_leJelentkezes.php" method="POST">';
 			$str .= '<input type="hidden" id="mc_id" name="mc_id" value="';
-			$str .= $job['MC_ID'] . '"><br>';
+			$str .= $job['MC_ID'] . '">';
+			$str .= '<input type="hidden" id="al_id" name="al_id" value="';
+			$str .= $job['ID'] . '">';
 			$str .= '<input type="submit" value="Lejelentkezés">';
 			$str .= '</form>';
 			$str .= '</div>';
@@ -622,17 +634,18 @@ function mv_felvettMunkat_listaz($username) {
 	return $str;
 }
 
-function mv_job_leJelentkezes($username, $mc_id) {
+function mv_job_leJelentkezes($username, $mc_id, $al_id) {
 
 	$conn = db_connect();
 	$exists = false;
 	if ( $conn ) {
 
-		$sql = 'SELECT * FROM ALLAS_JELENTKEZES WHERE MC_ADOSZAM = :mc_id AND
+		$sql = 'SELECT * FROM ALLAS_JELENTKEZES WHERE MC_ADOSZAM = :mc_id AND AL_ID = :al_id AND
 			MV_ADOSZAM = (SELECT SZEMELY_SZAM FROM MUNKAVALLALO WHERE username = :username)';
 			$stid = oci_parse($conn, $sql);
 			oci_bind_by_name($stid, ':username', $username);
 			oci_bind_by_name($stid, ':mc_id', $mc_id);
+			oci_bind_by_name($stid, ':al_id', $al_id);
 			$success = oci_execute($stid);
 			
 			if (!$stid) {
@@ -644,15 +657,17 @@ function mv_job_leJelentkezes($username, $mc_id) {
 			$row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS);
 
 			if($row > 0) $exists = true;
-			// Ha még nincs ilyen jelentkezés akkor insertelünk egyet.
+	
+
 			if($exists) {
 		
 			
-			$sql = 'DELETE FROM ALLAS_JELENTKEZES WHERE MC_ADOSZAM = :mc_id AND
+			$sql = 'DELETE FROM ALLAS_JELENTKEZES WHERE MC_ADOSZAM = :mc_id AND AL_ID = :al_id AND
 			MV_ADOSZAM = (SELECT SZEMELY_SZAM FROM MUNKAVALLALO WHERE username = :username)';
 			$stid = oci_parse($conn, $sql);
 			oci_bind_by_name($stid, ':username', $username);
 			oci_bind_by_name($stid, ':mc_id', $mc_id);
+			oci_bind_by_name($stid, ':al_id', $al_id);
 			$success = oci_execute($stid);
 			
 			if (!$stid) {
@@ -813,15 +828,17 @@ function ALLAS_dataInsert($helyszin, $muszak, $leiras, $tipus, $mc_id, $allas_ne
 		return false;
 }
 
-function mc_munkat_listaz() {
+function mc_munkat_listaz($username) {
 	
 	$conn = db_connect();
 	$str = '';
 	$counter = 1;
 	if ( $conn ) {
 
-		$sql = 'SELECT HELYSZIN, MUSZAK, LEIRAS, ALLAS_NEV,TIPUS, MC_ID FROM ALLAS_LEHETOSEG';
+		$sql = 'SELECT HELYSZIN, MUSZAK, LEIRAS, ALLAS_NEV,TIPUS, MC_ID FROM ALLAS_LEHETOSEG
+		 where MC_ID = (SELECT ADOSZAM FROM MUNKALTATO_CEG WHERE username = :username)';
 		$stid = oci_parse($conn, $sql);
+		oci_bind_by_name($stid, ':username', $username);
 		$success = oci_execute($stid);
 	
 		if (!$success) {
@@ -857,7 +874,7 @@ function mc_munkat_listaz() {
 			$str .= '<p class="p">' . $job['LEIRAS'] . '</p>';
 			$str .= '<form action="index_mc.php" method="POST">';
 			$str .= '<input type="hidden" id="mc_id" name="mc_id" value="';
-			$str .= $job['MC_ID'] . '"><br>';
+			$str .= $job['MC_ID'] . '">';
 			$str .= '<input class="modalSubmit" type="submit" value="Szerkesztés">';
 			$str .= '</form>';
 			$str .= '</div>';
@@ -867,4 +884,55 @@ function mc_munkat_listaz() {
 
 	}
 	return $str;
+}
+
+/* --------------ERVIN-------------- */
+
+function kv_dataUpdate($username, $adoszam, $helyszin, $nev) {
+
+    $conn = db_connect();
+    if ( $conn ) {
+
+            $sql = 'UPDATE KOZVETITO SET nev = :nev, helyszin = :helyszin, kv_adoszam = :adoszam WHERE username = :username';
+            $stid = oci_parse($conn, $sql);
+            oci_bind_by_name($stid, ':username', $username);
+            oci_bind_by_name($stid, ':nev', $nev);
+            oci_bind_by_name($stid, ':helyszin', $helyszin);
+            oci_bind_by_name($stid, ':adoszam', $adoszam);
+            $success = oci_execute($stid);
+
+            if (!$stid) {
+                $e = oci_error($stid);
+                trigger_error($e['message'], 
+                    'EXT_QUOTES', E_USER_ERROR);
+            }
+
+            return $success;
+
+    }
+        return false;
+}
+
+function kv_dataList($username) {
+
+    $conn = db_connect();
+    if ( $conn ) {
+
+            $sql = 'SELECT * FROM KOZVETITO WHERE username = :username';
+            $stid = oci_parse($conn, $sql);
+            oci_bind_by_name($stid, ':username', $username);
+            $success = oci_execute($stid);
+
+            if (!$stid) {
+                $e = oci_error($stid);
+                trigger_error($e['message'], 
+                    'EXT_QUOTES', E_USER_ERROR);
+            }
+
+            $row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS);
+            if($row > 0) return $row;
+
+
+    }
+        return false;
 }

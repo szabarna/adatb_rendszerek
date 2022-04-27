@@ -42,7 +42,7 @@
         
       
         <?php 
-             $munkak = mv_munkat_listaz();
+             $munkak = mv_munkat_listaz($tiszta_felhasznalonev);
             print $munkak;
         ?>
     </div>

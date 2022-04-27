@@ -106,7 +106,7 @@
                     <br>
                     <br>
                     <label for="leiras">Leírás</label>
-                    <textarea name="leiras" id="leiras" cols="30" rows="7.5" maxlength="200"></textarea>
+                    <textarea name="leiras" id="leiras" cols="30" rows="7.5" maxlength="200" required></textarea>
 
                     <br>
                     <br>
@@ -115,7 +115,7 @@
         </form>
         <div class="jobsContainer2">
             <?php 
-                $munkak = mc_munkat_listaz();
+                $munkak = mc_munkat_listaz($tiszta_felhasznalonev);
                 print $munkak;
             ?>
         </div>

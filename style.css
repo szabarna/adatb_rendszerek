@@ -185,8 +185,8 @@ label {
 
 .job {
     position: relative;
-    width: 90%;
-    height: 35vh;
+    width: 20rem;
+    height: 15rem;
     margin-bottom: 2rem;
     border-radius: 0.5rem;
     background-color: rgb(67, 124, 189);
