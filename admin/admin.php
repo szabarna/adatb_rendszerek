@@ -1,9 +1,11 @@
 <?php 
- require_once('../db.php');
+ require_once('./db.php');
  session_start();
 
     $user = $_SESSION['username'];
+      $allasJelentkezesList = admin_allasJelentkezes_listaz();
 
+    
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +49,30 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <div class="dataContainer" id="d1">
-               <h1>FIRST</h1> 
+               <div class="dList">
+                    <!-- <div class="listElement" id="l1"></div>
+                    <div class="listElement" id="l2"></div>
+                    <div class="listElement" id="l3"></div> -->
+                    <?php print $allasJelentkezesList; ?>
+               </div>
+               <div class="dForm">
+
+               <form action="mv_dataChange.php" method="POST" class="dataForm" id="mv_dataForm">
+
+                    <label for="AL_MC_ADOSZAM">MV_ADOSZAM:</label>
+                    <br>
+                    <input required type="text" id="AL_MC_ADOSZAM" name="AL_MC_ADOSZAM" maxlength="10">
+
+                    <br>
+                    <label for="AL_MV_ADOSZAM">MV_ADOSZAM:</label>
+                    <br>
+                    <input required type="text" name="AL_MV_ADOSZAM" id="AL_MV_ADOSZAM">
+
+                    <br>
+                    <input type="submit" id="changeSubmit" value="Insert" name="logout">
+                </form>
+
+               </div>
             </div>
         </div>
     </div>

@@ -71,7 +71,7 @@ body {
 }
 
 .table:hover {
-    transform: scale(1.05);
+    transform: scaleX(1.025) scaleY(1.02);
 }
 
 .modal {
@@ -114,4 +114,76 @@ body {
 
 input[type=submit] {
     cursor: pointer;
+}
+
+.dataContainer {
+    position: relative;
+    height: 97.45%;
+    top: 2rem;
+    display: grid;
+    grid-template-columns: auto auto;
+    left: 0.3rem;
+}
+
+.dList {
+    width: 27.5rem;
+    height: 90%;
+    position: relative;
+    background-color: rgb(67, 124, 189);
+    display: grid;
+    overflow-x: hidden;
+    overflow-y: auto;
+    justify-items: center;
+    
+}
+
+.dForm {
+    width: 27.5rem;
+    height: 100%;
+    position: relative;
+    justify-items: center;
+    background-color: transparent;
+    top: 1rem;
+    display: grid;
+    border-radius: 0.5em;
+    grid-template-columns: auto;
+    align-content: center;
+
+
+}
+
+
+.listElement  {
+    position: relative;
+    width: 20rem;
+    height: 40vh;
+    margin-bottom: 2rem;
+    border-radius: .25rem;
+    background-color: rgb(39, 93, 211);
+    display: grid;
+    justify-items: center;
+    align-content: space-around;
+    
+
+}
+
+#mv_dataForm {
+    display: grid;
+    grid-template-columns: auto;
+    row-gap: 0.5rem;
+    justify-items: center;
+    height: fit-content;
+    padding: 4rem;
+    background-color: rgb(48, 102, 182);
+    border-radius: .25rem;
+}
+
+.newForm {
+    display: grid;
+    grid-template-columns: auto;
+    row-gap: 0.5rem;
+    justify-items: center;
+    height: fit-content;
+    padding: 4rem;
+    background-color: transparent;
 }

@@ -81,13 +81,14 @@
                     <select name="MVcategory" id="MVcategory">
                         <?php print $kategoriak; ?>
                     </select>
-
+                    <br>
                     <label for="MViskolazottsag">Iskolázottság:</label>
 
                     <select name="MViskolazottsag" id="MViskolazottsag">
                         <?php print $iskolai_vegzettsegek; ?>
                     </select>
 
+                    <br>
                     <label for="MVexperience">Szakmai tapasztalat:</label>
 
                     <select name="MVexperience" id="MVexperience">
