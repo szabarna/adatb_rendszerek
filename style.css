@@ -109,7 +109,8 @@ input[type=submit] {
     position: relative;
     border-radius: 0.75em;
   }
-  
+
+
   /* The Close Button */
   .close {
     color: #aaa;
@@ -185,7 +186,7 @@ label {
 .job {
     position: relative;
     width: 90%;
-    height: 50vh;
+    height: 35vh;
     margin-bottom: 2rem;
     border-radius: 0.5rem;
     background-color: rgb(67, 124, 189);
@@ -204,4 +205,24 @@ label {
     text-align: center;
 }
 
+.MC_FORM {
+    display: grid;
+    justify-content: center;
+    height: fit-content;
+    position: relative;
+    padding-top: 15%;
+}
+
+.jobsContainer2 {
+    top: 3rem;
+    position: fixed;
+    width: 36.5vw;
+    height: 87vh;
+    background-color: transparent;
+    display: grid;
+    overflow-x: hidden;
+    overflow-y: auto;
+    justify-items: center;
+    margin-left: 50%;
+}
 
