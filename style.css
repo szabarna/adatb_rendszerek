@@ -16,6 +16,17 @@ body {
 
 input[type=submit] {
     cursor: pointer;
+    padding: 0.25rem;
+    background-color: transparent;
+    border: 2px solid rgb(49, 140, 214);
+    color: white;
+    border-radius: 0.25rem;
+    transition: 0.2s all ease-in-out;
+}
+
+input[type=submit]:hover {
+    background-color: rgb(49, 140, 214);
+    transform: scaleX(1.025);
 }
 
 .login-wrapper {
@@ -29,10 +40,32 @@ input[type=submit] {
 #login-form {
     display: grid;
     justify-content: center;
-    grid-template-rows: 2rem 2rem 2rem 2rem 2rem;
+    align-content: space-between;
+    row-gap: .5rem;
     background-color: rgb(67, 124, 189);
     padding: 4rem 5rem;
     border-radius: 0.75rem;
+}
+
+.radioButtons {
+    justify-self: center;
+    position: relative;
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    width: 8.5rem;
+}
+
+.radioButtons label {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.25rem;
+}
+
+.radioButtons input {
+    margin-bottom: 0.25rem;
+    background-color: red !important;
+    border: 2px solid red !important;
 }
 
 #loginA1 {
@@ -81,6 +114,17 @@ input[type=submit] {
 #dataChange {
     font-size: 1rem;
     cursor: pointer;
+    padding: 0.25rem;
+    background-color: transparent;
+    border: 2px solid rgb(49, 140, 214);
+    color: white;
+    border-radius: 0.25rem;
+    transition: 0.2s all ease-in-out;
+}
+
+#dataChange:hover {
+    background-color: rgb(49, 140, 214);
+    transform: scaleX(1.025);
 }
 
 #logout {
@@ -113,15 +157,16 @@ input[type=submit] {
 
   /* The Close Button */
   .close {
-    color: #aaa;
+    color: white;
     float: right;
     font-size: 28px;
     font-weight: bold;
+    transition: all 0.1s;
   }
   
   .close:hover,
   .close:focus {
-    color: black;
+    color: rgb(27, 105, 206);
     text-decoration: none;
     cursor: pointer;
   }
@@ -136,6 +181,7 @@ input[type=submit] {
     border-radius: 0.5em;
     grid-template-columns: auto auto;
     align-items: center;
+    border: 2px solid rgb(49, 140, 214);
     
 }
 
@@ -188,9 +234,8 @@ label {
     width: 20rem;
     height: 15rem;
     margin-bottom: 2rem;
-    border-radius: 0.5rem;
+    border-radius: 0.3rem;
     background-color: rgb(67, 124, 189);
-    border: 2px solid white;
     display: grid;
     justify-items: center;
     align-content: space-around;

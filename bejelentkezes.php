@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('db.php');
+
 if(!empty($_POST['felhasznalo'])) $piszkos_felhasznalonev = $_POST['felhasznalo'];
 
 
@@ -10,6 +11,8 @@ if (!empty($piszkos_felhasznalonev)) {
 	
 	$_SESSION['username'] = $tiszta_felhasznalonev;
 	if($tiszta_felhasznalonev == 'admin') header('Location: ./admin/admin.php');
+    
+	
 
 	$sikeres = bejelentkezes( $tiszta_felhasznalonev );
 	

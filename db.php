@@ -495,7 +495,7 @@ function mv_munkat_listaz($username) {
 			$counter += 1;
 		}
 
-		if($counter == 1) return "Nincs még állás lehetőség az adatbázisban!";
+		if($counter == 1) return "Nincs még állás lehetőség az adatbázisban vagy olyan állás amely megfelel a kritériumoknak!";
 
 	}
 	return $str;

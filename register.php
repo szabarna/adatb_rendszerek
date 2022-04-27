@@ -17,20 +17,20 @@ require_once('db.php');
     <div class="login-wrapper">
     <form action="regisztralas.php" id="login-form" method="POST">
 
-        <label>Felhasználónév: </label>
+        <label >Felhasználónév: </label>
         <input required type="text" maxlength="60" name="felhasznalo">
         <br>
-
-        <input type="radio" id="MV" name="radio" value="MV" checked>
-        <label for="MV">Munkavállaló</label>
-        <br>
-
-        <input type="radio" id="MC" name="radio" value="MC">
-        <label for="MC">Munkáltató</label>
-        <br>
-
-        <input type="radio" id="KC" name="radio" value="KV">
-        <label for="KC">Közvetitő</label>
+        <div class="radioButtons">
+            
+            <input type="radio" id="MV" name="radio" value="MV" checked>
+            <label for="MV">Munkavállaló</label>
+            
+            <input type="radio" id="MC" name="radio" value="MC">
+            <label  for="MC">Munkáltató</label>
+            
+            <input type="radio" id="KC" name="radio" value="KV">
+            <label for="KC">Közvetitő</label>
+        </div>
 
         <input type="submit" value="Elküld">
         <br>

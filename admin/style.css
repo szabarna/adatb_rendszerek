@@ -107,13 +107,23 @@ body {
   
   .close:hover,
   .close:focus {
-    color: black;
+    color: rgb(27, 105, 206);
     text-decoration: none;
     cursor: pointer;
   }
 
 input[type=submit] {
     cursor: pointer;
+    padding: 0.25rem;
+    background-color: rgb(49, 140, 214);
+    color: white;
+    border-color: transparent;
+    border-radius: 0.25rem;
+    transition: 0.2s all ease-in-out;
+}
+
+input[type=submit]:hover {
+    transform: scaleX(1.05);
 }
 
 .dataContainer {

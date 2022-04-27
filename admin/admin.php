@@ -3,7 +3,9 @@
  session_start();
 
     $user = $_SESSION['username'];
-      $allasJelentkezesList = admin_allasJelentkezes_listaz();
+  
+    
+    $allasJelentkezesList = admin_allasJelentkezes_listaz();
 
     
 ?>
@@ -59,7 +61,7 @@
 
                <form action="mv_dataChange.php" method="POST" class="dataForm" id="mv_dataForm">
 
-                    <label for="AL_MC_ADOSZAM">MV_ADOSZAM:</label>
+                    <label for="AL_MC_ADOSZAM">MC_ADOSZAM:</label>
                     <br>
                     <input required type="text" id="AL_MC_ADOSZAM" name="AL_MC_ADOSZAM" maxlength="10">
 
