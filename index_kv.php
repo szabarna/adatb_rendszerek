@@ -3,6 +3,8 @@
  session_start();
 
     $user = $_SESSION['username'];
+    $tiszta_felhasznalonev = htmlspecialchars($user);
+    $kv_adatok = kv_dataList($tiszta_felhasznalonev);
 
 ?>
 
@@ -32,27 +34,21 @@
         <div class="modal-content">
         <span class="close">&times;</span>
             <div class="formContainer">
-                <form action="dataChange.php" method="POST" class="dataForm">
+                <form action="kv_dataChange.php" method="POST" class="dataForm">
 
-                    <label for="nem">Nem</label>
+                    <label for="helyszin">Helyszin</label>
                     <br>
-                    <input required type="text" id="nem" name="nem">
+                    <input required type="text" id="helyszin" name="helyszin" value="<?php echo $kv_adatok['HELYSZIN'] ?>">
 
                     <br>
                     <label for="nev">Név</label>
                     <br>
-                    <input required type="text" name="nev" id="nev">
+                    <input required type="text" name="nev" id="nev" value="<?php echo $kv_adatok['NEV'] ?>">
 
                     <br>
-                    <label for="lakcim">Lakcim</label>
+                    <label for="adoszam">Adószám</label>
                     <br>
-                    <input required type="text" name="lakcim" id="lakcim">
-
-                    <br>
-                    <label for="szuldate">Szül. Date</label>
-                    <br>
-                    <input required type="date" name="szuldate" id="szuldate">
-
+                    <input required type="text" name="adoszam" id="adoszam" value="<?php echo $kv_adatok['KV_ADOSZAM'] ?>">
                     <br>
                     <input type="submit" id="changeSubmit" value="Szerkesztés" name="logout">
                 </form>

@@ -459,7 +459,7 @@ function mv_munkat_listaz() {
 
 		while ( $job = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)  ){
 			
-			$sql = 'SELECT CEG_NEV FROM MUNKALTATO_CEG WHERE ADOSZAM = :MC_ID';
+			$sql = 'SELECT NEV FROM MUNKALTATO_CEG WHERE ADOSZAM = :MC_ID';
 			$stnewid = oci_parse($conn, $sql);
 			oci_bind_by_name($stnewid, ':MC_ID', $job['MC_ID']);
 			$success = oci_execute($stnewid);
@@ -470,13 +470,13 @@ function mv_munkat_listaz() {
 					'EXT_QUOTES', E_USER_ERROR);
 			}
 
-			$ceg_nevek = oci_fetch_array($stnewid, OCI_ASSOC + OCI_RETURN_NULLS);
+			$NEVek = oci_fetch_array($stnewid, OCI_ASSOC + OCI_RETURN_NULLS);
 
 			$str .= '<div class="job" id="job';
 			$str .= "$counter";
 			$str .= '">';
 			$str .= '<h1>' . $job['TIPUS'] . '</h1>';
-			$str .= '<h2>' . $ceg_nevek['CEG_NEV'] . '</h2>';
+			$str .= '<h2>' . $NEVek['NEV'] . '</h2>';
 			$str .= '<h2>' . $job['HELYSZIN'] . '</h2>';
 			$str .= '<h3>' . $job['MUSZAK'] . '</h3>';
 			$str .= '<p class="p">' . $job['LEIRAS'] . '</p>';
@@ -581,7 +581,7 @@ function mv_felvettMunkat_listaz($username) {
 
 			$job = oci_fetch_array($stnewid, OCI_ASSOC + OCI_RETURN_NULLS);
 
-			$sql = 'SELECT CEG_NEV FROM MUNKALTATO_CEG WHERE ADOSZAM = :MC_ID';
+			$sql = 'SELECT NEV FROM MUNKALTATO_CEG WHERE ADOSZAM = :MC_ID';
 			$stnewid2 = oci_parse($conn, $sql);
 			oci_bind_by_name($stnewid2, ':MC_ID', $job['MC_ID']);
 			$success = oci_execute($stnewid2);
@@ -592,7 +592,7 @@ function mv_felvettMunkat_listaz($username) {
 					'EXT_QUOTES', E_USER_ERROR);
 			}
 
-			$ceg_nevek = oci_fetch_array($stnewid2, OCI_ASSOC + OCI_RETURN_NULLS);
+			$NEVek = oci_fetch_array($stnewid2, OCI_ASSOC + OCI_RETURN_NULLS);
 
 			
 
@@ -600,7 +600,7 @@ function mv_felvettMunkat_listaz($username) {
 			$str .= "$counter";
 			$str .= '">';
 			$str .= '<h1>' . $job['TIPUS'] . '</h1>';
-			$str .= '<h2>' . $ceg_nevek['CEG_NEV'] . '</h2>';
+			$str .= '<h2>' . $NEVek['NEV'] . '</h2>';
 			$str .= '<h2>' . $job['HELYSZIN'] . '</h2>';
 			$str .= '<h3>' . $job['MUSZAK'] . '</h3>';
 			$str .= '<p class="p">' . $job['LEIRAS'] . '</p>';
@@ -699,6 +699,55 @@ function bejelentkezeseket_listaz() {
 		$str .= '</table>';
 	}
 	return $str;
+}
+
+function kv_dataUpdate($username, $adoszam, $helyszin, $nev) {
+
+    $conn = db_connect();
+    if ( $conn ) {
+
+            $sql = 'UPDATE KOZVETITO SET nev = :nev, helyszin = :helyszin, kv_adoszam = :adoszam WHERE username = :username';
+            $stid = oci_parse($conn, $sql);
+            oci_bind_by_name($stid, ':username', $username);
+            oci_bind_by_name($stid, ':nev', $nev);
+            oci_bind_by_name($stid, ':helyszin', $helyszin);
+            oci_bind_by_name($stid, ':adoszam', $adoszam);
+            $success = oci_execute($stid);
+
+            if (!$stid) {
+                $e = oci_error($stid);
+                trigger_error($e['message'], 
+                    'EXT_QUOTES', E_USER_ERROR);
+            }
+
+            return $success;
+
+    }
+        return false;
+}
+
+function kv_dataList($username) {
+
+    $conn = db_connect();
+    if ( $conn ) {
+
+            $sql = 'SELECT * FROM KOZVETITO WHERE username = :username';
+            $stid = oci_parse($conn, $sql);
+            oci_bind_by_name($stid, ':username', $username);
+            $success = oci_execute($stid);
+
+            if (!$stid) {
+                $e = oci_error($stid);
+                trigger_error($e['message'], 
+                    'EXT_QUOTES', E_USER_ERROR);
+            }
+
+            $row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS);
+            if($row > 0) return $row;
+
+
+    }
+        return false;
 }
 
 
