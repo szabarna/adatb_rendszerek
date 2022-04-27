@@ -4,7 +4,7 @@
 function db_connect() {
 	
 
-	$conn = oci_connect('szabarna', '1232', 'localhost/XE', 'AL32UTF8');
+	$conn = oci_connect('varmar', '4526', 'localhost/XE', 'AL32UTF8');
 	if (!$conn) {
 		$e = oci_error($conn);
 		trigger_error($e['message'], 'EXT_QUOTES', E_USER_ERROR);
@@ -470,13 +470,13 @@ function mv_munkat_listaz() {
 					'EXT_QUOTES', E_USER_ERROR);
 			}
 
-			$NEVek = oci_fetch_array($stnewid, OCI_ASSOC + OCI_RETURN_NULLS);
+			$ceg_nevek = oci_fetch_array($stnewid, OCI_ASSOC + OCI_RETURN_NULLS);
 
 			$str .= '<div class="job" id="job';
 			$str .= "$counter";
 			$str .= '">';
 			$str .= '<h1>' . $job['TIPUS'] . '</h1>';
-			$str .= '<h2>' . $NEVek['NEV'] . '</h2>';
+			$str .= '<h2>' . $ceg_nevek['NEV'] . '</h2>';
 			$str .= '<h2>' . $job['HELYSZIN'] . '</h2>';
 			$str .= '<h3>' . $job['MUSZAK'] . '</h3>';
 			$str .= '<p class="p">' . $job['LEIRAS'] . '</p>';
@@ -592,7 +592,7 @@ function mv_felvettMunkat_listaz($username) {
 					'EXT_QUOTES', E_USER_ERROR);
 			}
 
-			$NEVek = oci_fetch_array($stnewid2, OCI_ASSOC + OCI_RETURN_NULLS);
+			$ceg_nevek = oci_fetch_array($stnewid2, OCI_ASSOC + OCI_RETURN_NULLS);
 
 			
 
@@ -600,7 +600,7 @@ function mv_felvettMunkat_listaz($username) {
 			$str .= "$counter";
 			$str .= '">';
 			$str .= '<h1>' . $job['TIPUS'] . '</h1>';
-			$str .= '<h2>' . $NEVek['NEV'] . '</h2>';
+			$str .= '<h2>' . $ceg_nevek['NEV'] . '</h2>';
 			$str .= '<h2>' . $job['HELYSZIN'] . '</h2>';
 			$str .= '<h3>' . $job['MUSZAK'] . '</h3>';
 			$str .= '<p class="p">' . $job['LEIRAS'] . '</p>';
@@ -701,54 +701,167 @@ function bejelentkezeseket_listaz() {
 	return $str;
 }
 
-function kv_dataUpdate($username, $adoszam, $helyszin, $nev) {
 
-    $conn = db_connect();
-    if ( $conn ) {
+//Munkaado_ceg - Martin
 
-            $sql = 'UPDATE KOZVETITO SET nev = :nev, helyszin = :helyszin, kv_adoszam = :adoszam WHERE username = :username';
-            $stid = oci_parse($conn, $sql);
-            oci_bind_by_name($stid, ':username', $username);
-            oci_bind_by_name($stid, ':nev', $nev);
-            oci_bind_by_name($stid, ':helyszin', $helyszin);
-            oci_bind_by_name($stid, ':adoszam', $adoszam);
-            $success = oci_execute($stid);
+function mc_adatokat_listaz($username) {
+	
+	$conn = db_connect();
 
-            if (!$stid) {
-                $e = oci_error($stid);
-                trigger_error($e['message'], 
-                    'EXT_QUOTES', E_USER_ERROR);
-            }
+	if ( $conn ) {
+		
+		$sql = 'SELECT * FROM MUNKALTATO_CEG WHERE username = :username';
+		$stid = oci_parse($conn, $sql);
+		oci_bind_by_name($stid, ':username', $username);
+		$success = oci_execute($stid);
 
-            return $success;
-
-    }
-        return false;
+		if (!$success) {
+			$e = oci_error($stid);
+			trigger_error($stid['message'], 
+				'EXT_QUOTES', E_USER_ERROR);
+		}
+	
+		$row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS);
+					// check if kv_id != null if null continue searching for log_type
+					if($row > 0) {
+						return $row;
+					}
+	}
+	return false;
 }
 
-function kv_dataList($username) {
-
-    $conn = db_connect();
-    if ( $conn ) {
-
-            $sql = 'SELECT * FROM KOZVETITO WHERE username = :username';
-            $stid = oci_parse($conn, $sql);
-            oci_bind_by_name($stid, ':username', $username);
-            $success = oci_execute($stid);
-
-            if (!$stid) {
-                $e = oci_error($stid);
-                trigger_error($e['message'], 
-                    'EXT_QUOTES', E_USER_ERROR);
-            }
-
-            $row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS);
-            if($row > 0) return $row;
-
-
-    }
-        return false;
+function mc_dataUpdate($username, $nev, $adoszam, $telephely, $kat_megnevezes) {
+	
+	$conn = db_connect();
+	$alreadyUsed = false;
+	if ( $conn ) {
+			$sql = 'UPDATE MUNKALTATO_CEG SET nev = :nev, mc_adoszam = :adoszam, telephely = :telephely, 
+				kat_id = (SELECT ID FROM MUNKALTATO_CEG_KATEGORIAK WHERE MEGNEVEZES = :kat_megnevezes)  
+			 	WHERE username = :username';
+			$stid = oci_parse($conn, $sql);
+			oci_bind_by_name($stid, ':username', $username);
+			oci_bind_by_name($stid, ':nev', $nev);
+			oci_bind_by_name($stid, ':adoszam', $adoszam);
+			oci_bind_by_name($stid, ':telephely', $telephely);
+			oci_bind_by_name($stid, ':kat_megnevezes', $kat_megnevezes);
+			$success = oci_execute($stid);
+			
+			if (!$stid) {
+				$e = oci_error($stid);
+				trigger_error($e['message'], 
+					'EXT_QUOTES', E_USER_ERROR);
+			}
+			return $success;
+		
+	}
+		return false;
 }
 
+function allas_adatokat_listaz($adoszam) {
+	
+	$conn = db_connect();
+
+	if ( $conn ) {
+		
+		$sql = 'SELECT * FROM ALLAS_LEHETOSEG WHERE mc_id = :adoszam';
+		$stid = oci_parse($conn, $sql);
+		oci_bind_by_name($stid, ':adoszam', $adoszam);
+		$success = oci_execute($stid);
+
+		if (!$success) {
+			$e = oci_error($stid);
+			trigger_error($stid['message'], 
+				'EXT_QUOTES', E_USER_ERROR);
+		}
+	
+		$row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS);
+					// check if kv_id != null if null continue searching for log_type
+					if($row > 0) {
+						return $row;
+					}
+	}
+	return false;
+}
+
+function ALLAS_dataInsert($helyszin, $muszak, $leiras, $tipus, $mc_id, $allas_nev, $kat_id) {
+	
+	$conn = db_connect();
+	$alreadyUsed = false;
+	if ( $conn ) {
+			$sql = 'INSERT INTO ALLAS_LEHETOSEG(helyszin, muszak, leiras, tipus, mc_id, allas_nev, kat_id) '.
+			'VALUES(:helyszin, :muszak, :leiras, :tipus, :mc_id, :allas_nev, :kat_id)';
+			$stid = oci_parse($conn, $sql);
+			oci_bind_by_name($stid, ':helyszin', $helyszin);
+			oci_bind_by_name($stid, ':muszak', $muszak);
+			oci_bind_by_name($stid, ':leiras', $leiras);
+			oci_bind_by_name($stid, ':tipus', $tipus);
+			oci_bind_by_name($stid, ':mc_id', $mc_id);
+			oci_bind_by_name($stid, ':allas_nev', $allas_nev);
+			oci_bind_by_name($stid, ':kat_id', $kat_id);
+			$success = oci_execute($stid);
+			
+			if (!$stid) {
+				$e = oci_error($stid);
+				trigger_error($e['message'], 
+					'EXT_QUOTES', E_USER_ERROR);
+			}
+			return $success;
+		
+	}
+		return false;
+}
+
+function mc_munkat_listaz() {
+	
+	$conn = db_connect();
+	$str = '';
+	$counter = 1;
+	if ( $conn ) {
+
+		$sql = 'SELECT HELYSZIN, MUSZAK, LEIRAS, TIPUS, MC_ID FROM ALLAS_LEHETOSEG';
+		$stid = oci_parse($conn, $sql);
+		$success = oci_execute($stid);
+	
+		if (!$success) {
+			$e = oci_error($stid);
+			trigger_error($e['message'], 
+				'EXT_QUOTES', E_USER_ERROR);
+		}
 
 
+		while ( $job = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)  ){
+			
+			$sql = 'SELECT NEV FROM MUNKALTATO_CEG WHERE ADOSZAM = :MC_ID';
+			$stnewid = oci_parse($conn, $sql);
+			oci_bind_by_name($stnewid, ':MC_ID', $job['MC_ID']);
+			$success = oci_execute($stnewid);
+		
+			if (!$success) {
+				$e = oci_error($stnewid);
+				trigger_error($e['message'], 
+					'EXT_QUOTES', E_USER_ERROR);
+			}
+
+			$ceg_nevek = oci_fetch_array($stnewid, OCI_ASSOC + OCI_RETURN_NULLS);
+
+			$str .= '<div class="job" id="job';
+			$str .= "$counter";
+			$str .= '">';
+			$str .= '<p>' . $job['TIPUS'] . '</p>';
+			$str .= '<p>' . $ceg_nevek['NEV'] . '</p>';
+			$str .= '<p>' . $job['HELYSZIN'] . '</p>';
+			$str .= '<p>' . $job['MUSZAK'] . '</p>';
+			$str .= '<p class="p">' . $job['LEIRAS'] . '</p>';
+			$str .= '<form action="index_mc.php" method="POST">';
+			$str .= '<input type="hidden" id="mc_id" name="mc_id" value="';
+			$str .= $job['MC_ID'] . '"><br>';
+			$str .= '<input class="modalSubmit" type="submit" value="Szerkesztés">';
+			$str .= '</form>';
+			$str .= '</div>';
+
+			$counter += 1;
+		}
+
+	}
+	return $str;
+}
