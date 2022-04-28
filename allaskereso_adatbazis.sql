@@ -354,20 +354,18 @@
   TABLESPACE "USERS" ;
 REM INSERTING into ALLAS_JELENTKEZES
 SET DEFINE OFF;
-Insert into ALLAS_JELENTKEZES (MV_ADOSZAM,MC_ADOSZAM,ID,AL_ID) values ('2','3','105','7');
-Insert into ALLAS_JELENTKEZES (MV_ADOSZAM,MC_ADOSZAM,ID,AL_ID) values ('2','7','103','5');
 Insert into ALLAS_JELENTKEZES (MV_ADOSZAM,MC_ADOSZAM,ID,AL_ID) values ('3','7','84','6');
 Insert into ALLAS_JELENTKEZES (MV_ADOSZAM,MC_ADOSZAM,ID,AL_ID) values ('3','8','85','8');
-Insert into ALLAS_JELENTKEZES (MV_ADOSZAM,MC_ADOSZAM,ID,AL_ID) values ('3','3','86','3');
-Insert into ALLAS_JELENTKEZES (MV_ADOSZAM,MC_ADOSZAM,ID,AL_ID) values ('2','8','104','8');
 Insert into ALLAS_JELENTKEZES (MV_ADOSZAM,MC_ADOSZAM,ID,AL_ID) values ('4','3','88','7');
 Insert into ALLAS_JELENTKEZES (MV_ADOSZAM,MC_ADOSZAM,ID,AL_ID) values ('4','8','89','8');
 Insert into ALLAS_JELENTKEZES (MV_ADOSZAM,MC_ADOSZAM,ID,AL_ID) values ('4','7','90','6');
+Insert into ALLAS_JELENTKEZES (MV_ADOSZAM,MC_ADOSZAM,ID,AL_ID) values ('2','3','122','23');
+Insert into ALLAS_JELENTKEZES (MV_ADOSZAM,MC_ADOSZAM,ID,AL_ID) values ('2','8','124','8');
+Insert into ALLAS_JELENTKEZES (MV_ADOSZAM,MC_ADOSZAM,ID,AL_ID) values ('2','7','123','5');
 REM INSERTING into ALLAS_LEHETOSEG
 SET DEFINE OFF;
-Insert into ALLAS_LEHETOSEG (HELYSZIN,MUSZAK,LEIRAS,TIPUS,MC_ID,ALLAS_NEV,KAT_ID,ID) values ('SZTE IRINYI ÉPÜLET','16:00 - 20:00','EASYPEASY','irodai','7','SZTE DIGIKÉP TANSZÉK','IT','6');
-Insert into ALLAS_LEHETOSEG (HELYSZIN,MUSZAK,LEIRAS,TIPUS,MC_ID,ALLAS_NEV,KAT_ID,ID) values ('Szeged Irinyi Épület','0:00 - 24:00','Könnyü nagyon','irodai','3','Mérnökinformatika','IT','3');
-Insert into ALLAS_LEHETOSEG (HELYSZIN,MUSZAK,LEIRAS,TIPUS,MC_ID,ALLAS_NEV,KAT_ID,ID) values ('Szeged Irinyi Épület','0:00 - 24:00','Easy','irodai','3','Gazdaságinformatika','FINANCE','4');
+Insert into ALLAS_LEHETOSEG (HELYSZIN,MUSZAK,LEIRAS,TIPUS,MC_ID,ALLAS_NEV,KAT_ID,ID) values ('SZTE IRINYI ÉPÜLET','20:00 - 20:00','EASYPEASY','irodai','7','SZTE DIGIKÉP TANSZÉK','FINANCE','6');
+Insert into ALLAS_LEHETOSEG (HELYSZIN,MUSZAK,LEIRAS,TIPUS,MC_ID,ALLAS_NEV,KAT_ID,ID) values ('UJ_HELYSZIN','UJ_MUSZAJ','UJ_LEIRAS',null,'3','UJ_JOB','FINANCE','23');
 Insert into ALLAS_LEHETOSEG (HELYSZIN,MUSZAK,LEIRAS,TIPUS,MC_ID,ALLAS_NEV,KAT_ID,ID) values ('Szeged Irinyi Épület','12:00 - 18:00','ITITITITIITITITITIRT','irodai','7','Gazdaságinformatika','IT','5');
 Insert into ALLAS_LEHETOSEG (HELYSZIN,MUSZAK,LEIRAS,TIPUS,MC_ID,ALLAS_NEV,KAT_ID,ID) values ('Szeged Irinyi Épület','0:00 - 24:00','LEIRO','konnyu_fizikai','3','MINDENTUDO','IT','7');
 Insert into ALLAS_LEHETOSEG (HELYSZIN,MUSZAK,LEIRAS,TIPUS,MC_ID,ALLAS_NEV,KAT_ID,ID) values ('Szeged Irinyi Épület','12:00 - 18:00','jo','irodai','8','Gazdaságinformatika','IT','8');
@@ -397,7 +395,7 @@ Insert into MUNKALTATO_CEG_KATEGORIAK (MEGNEVEZES,ID) values ('IT','1');
 Insert into MUNKALTATO_CEG_KATEGORIAK (MEGNEVEZES,ID) values ('FINANCE','2');
 REM INSERTING into MUNKAVALLALO
 SET DEFINE OFF;
-Insert into MUNKAVALLALO (NEM,SZUL_DATUM,LAKCIM,NEV,USERNAME,KAT_ID,IV_ID,SZT_ID,SZEMELY_SZAM) values ('férfi',to_date('00-JAN.  -01','RR-MON-DD'),'6500 Baja','Szabó Barnabás','szabarna','1','4','3','2');
+Insert into MUNKAVALLALO (NEM,SZUL_DATUM,LAKCIM,NEV,USERNAME,KAT_ID,IV_ID,SZT_ID,SZEMELY_SZAM) values ('férfi',to_date('00-JÚL.  -22','RR-MON-DD'),'6500 Baja','Szabó Barnabás','szabarna','1','4','3','2');
 Insert into MUNKAVALLALO (NEM,SZUL_DATUM,LAKCIM,NEV,USERNAME,KAT_ID,IV_ID,SZT_ID,SZEMELY_SZAM) values ('férfi',to_date('70-JAN.  -01','RR-MON-DD'),'6500 Baja','Szabó Barnabás','mv1','2','2','2','3');
 Insert into MUNKAVALLALO (NEM,SZUL_DATUM,LAKCIM,NEV,USERNAME,KAT_ID,IV_ID,SZT_ID,SZEMELY_SZAM) values ('férfi',to_date('06-JAN.  -01','RR-MON-DD'),'Baja','test1kettő','mv2','2','2','2','4');
 Insert into MUNKAVALLALO (NEM,SZUL_DATUM,LAKCIM,NEV,USERNAME,KAT_ID,IV_ID,SZT_ID,SZEMELY_SZAM) values (null,null,null,null,'ujMv',null,null,null,'5');

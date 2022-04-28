@@ -805,7 +805,7 @@ function ALLAS_dataInsert($helyszin, $muszak, $leiras, $tipus, $mc_id, $allas_ne
 	$conn = db_connect();
 	$alreadyUsed = false;
 	if ( $conn ) {
-			$sql = 'INSERT INTO ALLAS_LEHETOSEG(helyszin, muszak, leiras, tipus, mc_id, allas_nev, kat_id) '.
+			$sql = 'INSERT INTO ALLAS_LEHETOSEG (helyszin, muszak, leiras, tipus, mc_id, allas_nev, kat_id) '.
 			'VALUES(:helyszin, :muszak, :leiras, :tipus, :mc_id, :allas_nev, :kat_id)';
 			$stid = oci_parse($conn, $sql);
 			oci_bind_by_name($stid, ':helyszin', $helyszin);
