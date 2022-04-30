@@ -936,3 +936,183 @@ function kv_dataList($username) {
     }
         return false;
 }
+
+function kv_adat_listaz($username) {
+	
+	$conn = db_connect();
+	$str = '';
+	$counter = 1;
+	if ( $conn ) {
+
+		$sql = 'SELECT * FROM ALLAS_JELENTKEZES WHERE (AL_ID NOT IN (SELECT AL_ID FROM KOZVETITESEK))';
+		$stid = oci_parse($conn, $sql);
+		$success = oci_execute($stid);
+	
+		if (!$success) {
+			$e = oci_error($stid);
+			trigger_error($e['message'], 
+				'EXT_QUOTES', E_USER_ERROR);
+		}
+
+
+		while ( $jelentkezes = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)  ){
+			
+			$sql = 'SELECT * FROM MUNKAVALLALO WHERE SZEMELY_SZAM = :MV_ID';
+			$stnewid = oci_parse($conn, $sql);
+			oci_bind_by_name($stnewid, ':MV_ID', $jelentkezes['MV_ADOSZAM']);
+			$success = oci_execute($stnewid);
+		
+			if (!$success) {
+				$e = oci_error($stnewid);
+				trigger_error($e['message'], 
+					'EXT_QUOTES', E_USER_ERROR);
+			}
+
+			$munkavallalo = oci_fetch_array($stnewid, OCI_ASSOC + OCI_RETURN_NULLS);
+
+			$sql = 'SELECT * FROM ALLAS_LEHETOSEG WHERE MC_ID = :MC_ID';
+			$stnewid2 = oci_parse($conn, $sql);
+			oci_bind_by_name($stnewid2, ':MC_ID', $jelentkezes['MC_ADOSZAM']);
+			$success = oci_execute($stnewid2);
+		
+			if (!$success) {
+				$e = oci_error($stnewid2);
+				trigger_error($e['message'], 
+					'EXT_QUOTES', E_USER_ERROR);
+			}
+
+			$allaslehetoseg = oci_fetch_array($stnewid2, OCI_ASSOC + OCI_RETURN_NULLS);
+
+			$sql = 'SELECT MEGNEVEZES FROM MUNKAVALLALO_KATEGORIAK WHERE ID = :KAT_ID';
+			$stnewid3 = oci_parse($conn, $sql);
+			oci_bind_by_name($stnewid3, ':KAT_ID', $munkavallalo['KAT_ID']);
+			$success = oci_execute($stnewid3);
+		
+			if (!$success) {
+				$e = oci_error($stnewid3);
+				trigger_error($e['message'], 
+					'EXT_QUOTES', E_USER_ERROR);
+			}
+
+			$kat_megnevezes = oci_fetch_array($stnewid3, OCI_ASSOC + OCI_RETURN_NULLS);
+
+			$sql = 'SELECT MEGNEVEZES FROM ISKOLAI_VEGZETTSEGEK WHERE CV_ID = :IV_ID';
+			$stnewid4 = oci_parse($conn, $sql);
+			oci_bind_by_name($stnewid4, ':IV_ID', $munkavallalo['IV_ID']);
+			$success = oci_execute($stnewid4);
+		
+			if (!$success) {
+				$e = oci_error($stnewid4);
+				trigger_error($e['message'], 
+					'EXT_QUOTES', E_USER_ERROR);
+			}
+
+			$iv_megnevezes = oci_fetch_array($stnewid4, OCI_ASSOC + OCI_RETURN_NULLS);
+
+
+			$sql = 'SELECT MEGNEVEZES FROM SZAKMAI_TAPASZTALAT WHERE CV_ID = :SZT_ID';
+			$stnewid5 = oci_parse($conn, $sql);
+			oci_bind_by_name($stnewid5, ':SZT_ID', $munkavallalo['SZT_ID']);
+			$success = oci_execute($stnewid5);
+		
+			if (!$success) {
+				$e = oci_error($stnewid5);
+				trigger_error($e['message'], 
+					'EXT_QUOTES', E_USER_ERROR);
+			}
+
+			$szt_megnevezes = oci_fetch_array($stnewid5, OCI_ASSOC + OCI_RETURN_NULLS);
+
+			$str .= '<div class="job kv_adat" id="job';
+			$str .= "$counter";
+			$str .= '">';
+
+			$str .=	'<div class="kv_munkaltato">';
+			$str .= '<h1>' . $munkavallalo['NEM'] . '</h1>';
+			$str .= '<h1>' . $munkavallalo['NEV'] . '</h1>';
+			$str .= '<h2>' . $kat_megnevezes['MEGNEVEZES'] . '</h2>';
+			$str .= '<h2>' . $iv_megnevezes['MEGNEVEZES'] . '</h2>';
+			$str .= '<h2>' . $szt_megnevezes['MEGNEVEZES'] . '</h2>';
+			$str .=	'</div>';
+
+
+			$str .=	'<div class="kv_allaslehetoseg">';
+			$str .= '<h1>' . $allaslehetoseg['ALLAS_NEV'] . '</h1>';
+			$str .= '<h1>' . $allaslehetoseg['TIPUS'] . '</h1>';
+			$str .= '<h2>' . $allaslehetoseg['MUSZAK'] . '</h2>';
+			$str .= '<p class="p">' . $allaslehetoseg['LEIRAS'] . '</p>';
+			$str .=	'</div>';
+
+			$str .= '<form action="kv_datasubmit.php" method="POST" class="kv_form">';
+
+			$str .= '<input type="hidden" id="mv_id" name="mv_id" value="';
+			$str .= $jelentkezes['MV_ADOSZAM'] . '">';
+
+			$str .= '<input type="hidden" id="mc_id" name="mc_id" value="';
+			$str .= $jelentkezes['MC_ADOSZAM'] . '">';
+
+			$str .= '<input type="hidden" id="al_id" name="al_id" value="';
+			$str .= $jelentkezes['AL_ID'] . '">';
+
+			$str .= '<input type="submit" name="elfogad" value="Elfogadás">';
+			$str .= '<input type="submit" name="elutasit" value="Elutasitás">';
+			$str .= '</form>';
+			$str .= '</div>';
+
+			$counter += 1;
+		}
+
+		if($counter == 1) return "Nincs még állás lehetőség az adatbázisban vagy olyan állás amely megfelel a kritériumoknak!";
+
+	}
+	return $str;
+}
+
+function kv_elfogad($mv, $mc, $al, $username) {
+
+    $conn = db_connect();
+    if ( $conn ) {
+
+            $sql = 'INSERT INTO KOZVETITESEK(MC_ID, MV_ID, AL_ID, KV_ID) VALUES (:MC, :MV, :AL,(SELECT ADOSZAM FROM KOZVETITO WHERE username = :username))';
+            $stid = oci_parse($conn, $sql);
+            oci_bind_by_name($stid, ':MC', $mc);
+            oci_bind_by_name($stid, ':MV', $mv);
+            oci_bind_by_name($stid, ':AL', $al);
+            oci_bind_by_name($stid, ':username', $username);
+            $success = oci_execute($stid);
+
+            if (!$stid) {
+                $e = oci_error($stid);
+                trigger_error($e['message'], 
+                    'EXT_QUOTES', E_USER_ERROR);
+            }
+
+           return $success;
+
+    }
+        return false;
+}
+
+function kv_elutasit($mv, $mc, $al, $username) {
+
+    $conn = db_connect();
+    if ( $conn ) {
+
+            $sql = 'DELETE FROM ALLAS_JELENTKEZES WHERE MC_ADOSZAM = :MC AND MV_ADOSZAM = :MV AND AL_ID = :AL';
+            $stid = oci_parse($conn, $sql);
+            oci_bind_by_name($stid, ':MC', $mc);
+            oci_bind_by_name($stid, ':MV', $mv);
+            oci_bind_by_name($stid, ':AL', $al);
+            $success = oci_execute($stid);
+
+            if (!$stid) {
+                $e = oci_error($stid);
+                trigger_error($e['message'], 
+                    'EXT_QUOTES', E_USER_ERROR);
+            }
+
+            return $success;
+
+    }
+        return false;
+}
