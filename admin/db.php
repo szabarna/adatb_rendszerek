@@ -4,7 +4,7 @@
 function db_connect() {
 	
 
-	$conn = oci_connect('szabarna', '1232', 'localhost/XE', 'AL32UTF8');
+	$conn = oci_connect('varmar', '4526', 'localhost/XE', 'AL32UTF8');
 	if (!$conn) {
 		$e = oci_error($conn);
 		trigger_error($e['message'], 'EXT_QUOTES', E_USER_ERROR);
@@ -41,26 +41,26 @@ function admin_allasJelentkezes_listaz() {
 			$str .= '">';
 			$str .= '<form action="./AJ_dataChange.php" method="POST" class="dataForm newForm" id="dataForm' . $counter . '">';
 
-			$str .= '<label for="AL_MV_ADOSZAM">MV_ADOSZAM:</label>';
+			$str .= '<label for="AL_MV_ADOSZAM">MV_ADOSZAM:</label><br>';
 			$str .= '<select id="AL_MV_ADOSZAM" name="AL_MV_ADOSZAM">';
 
 			$str .= $mvOptions;
 
 			$str .= '</select>';
-			$str .= '';
+			$str .= '<br>';
 
-			$str .= '<label for="AL_MC_ADOSZAM">MC_ADOSZAM:</label>';
+			$str .= '<label for="AL_MC_ADOSZAM">MC_ADOSZAM:</label><br>';
 			$str .= '<select id="AL_MC_ADOSZAM" name="AL_MC_ADOSZAM">';
 
 			$str .= $mcOptions;
 
 			$str .= '</select>';
-			$str .= '';
+			$str .= '<br>';
 
 			$str .= '<input type="hidden" id="mv_id" name="mv_id" value="';
-			$str .= $row['MV_ADOSZAM'] . '">';
+			$str .= $row['MV_ADOSZAM'] . '"><br>';
 			$str .= '<input type="hidden" id="mc_id" name="mc_id" value="';
-			$str .= $row['MC_ADOSZAM'] . '">';
+			$str .= $row['MC_ADOSZAM'] . '"><br>';
 			$str .= '<div class="adminListSubmits">';
 			$str .= '<input style="text-decoration: line-through;" type="submit" name="update" value="Update">';
 			$str .= '<input type="submit" name="delete" value="Delete">';
@@ -200,29 +200,34 @@ function admin_allasLehetoseg_listaz() {
 			$str .= '">';
 			$str .= '<form action="./AL_dataChange.php" method="POST" class="dataForm newForm AL_FORM" id="dataForm' . $counter . '">';
 
-			$str .= '<label for="AL_ALLAS_NEV">ALLAS_NEV</label>';
+			$str .= '<label for="AL_ALLAS_NEV">ALLAS_NEV</label><br>';
 			$str .= '<input required type="text" name="AL_ALLAS_NEV" value="';
 			$str .= $row['ALLAS_NEV'] . '">';
+			$str .= '<br>';
 
-			$str .= '<label for="AL_HELYSZIN">HELYSZIN</label>';
+			$str .= '<label for="AL_HELYSZIN">HELYSZIN</label><br>';
 			$str .= '<input required type="text" name="AL_HELYSZIN" value="';
 			$str .= $row['HELYSZIN'] . '">';
+			$str .= '<br>';
 
-			$str .= '<label for="AL_KAT_ID">KATEGORIA:</label>';
+			$str .= '<label for="AL_KAT_ID">KATEGORIA:</label><br>';
 			$str .= '<select required id="AL_KAT_ID" name="AL_KAT_ID">';
 			$str .= AL_kategoriat_listaz($row['KAT_ID']);
 			$str .= '</select>';
+			$str .= '<br>';
 			
-			$str .= '<label for="AL_MUSZAK">MUSZAK</label>';
+			$str .= '<label for="AL_MUSZAK">MUSZAK</label><br>';
 			$str .= '<input required type="text" name="AL_MUSZAK" value="';
 			$str .= $row['MUSZAK'] . '">';
+			$str .= '<br>';
 
-			$str .= '<label for="AL_LEIRAS">LEIRAS</label>';
+			$str .= '<label for="AL_LEIRAS">LEIRAS</label><br>';
 			$str .= '<input required type="text" name="AL_LEIRAS" value="';
 			$str .= $row['LEIRAS'] . '">';
+			$str .= '<br>';
 
 			$str .= '<input type="hidden" id="al_id" name="al_id" value="';
-			$str .= $row['ID'] . '">';
+			$str .= $row['ID'] . '"><br>';
 
 			$str .= '<div class="adminListSubmits">';
 			$str .= '<input type="submit" name="update" value="Update">';

@@ -56,16 +56,5 @@
         </div>
     </div>
     <script src="./script.js"></script>
-
-    <div class="jobsContainer">
-        
-      
-        <?php 
-             $munkak = kv_adat_listaz($tiszta_felhasznalonev);
-            print $munkak;
-        ?>
-    </div>
-
-
 </body>
 </html>

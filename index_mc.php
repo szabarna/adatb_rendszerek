@@ -71,8 +71,9 @@
     </div>
     
     <div class="MC_FORM">
+        <p id= "cim">Új munka felvétele<p>
+        <br> 
         <form action="allas_dataChange.php" method="POST" class="dataForm">
-
                     <label for="allasMegnevezes">Állás megnevezése</label>
                     <input required type="text" id="allasMegnevezes" name="allasMegnevezes" maxlength="50">
 
@@ -91,15 +92,17 @@
                     <br>
                     <label for="tipus">Típus</label>
                     <select name="tipusok" id="tipusok">
-                        <option value="fizikai">Fizikai</option>
-                        <option value="konnyu_fizikai">Könnyű fizikai</option>
-                        <option value="irodai">Irodai</option>
+                        <option value="" disabled selected>Válassz típust!</option>
+                        <option value="Fizikai">Fizikai</option>
+                        <option value="Könnyű fizikai">Könnyű fizikai</option>
+                        <option value="Irodai">Irodai</option>
                     </select>
 
                     <br>
                     <br>
                     <label for="ALLAScategory">Munka besorolás</label>
                     <select name="ALLAScategory" id="ALLAScategory">
+                        <option value="" disabled selected>Válassz besorolást!</option>
                         <?php print $kategoriak; ?>
                     </select>
 

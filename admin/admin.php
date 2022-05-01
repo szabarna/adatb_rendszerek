@@ -63,15 +63,15 @@
                <form action="AJ_dataChange.php" method="POST" class="dataForm" id="mv_dataForm">
 
                     <label for="AL_MC_ADOSZAM">MC_ADOSZAM:</label>
-                    
+                    <br>
                     <input required type="text" id="AL_MC_ADOSZAM" name="AL_MC_ADOSZAM" maxlength="10">
 
-                    
+                    <br>
                     <label for="AL_MV_ADOSZAM">MV_ADOSZAM:</label>
-                    
+                    <br>
                     <input required type="text" name="AL_MV_ADOSZAM" id="AL_MV_ADOSZAM">
 
-                    
+                    <br>
                     <input type="submit" style="text-decoration: line-through;" id="changeSubmit" value="Insert" name="insert">
                 </form>
 
@@ -95,38 +95,38 @@
                <form action="AL_dataChange.php" method="POST" class="dataForm AL_DATAFORM" id="mv_dataForm">
 
                     <label for="AL_MC_ID">MC_ID:</label>
-                    
+                    <br>
                     <select required id="AL_MC_ID" name="AL_MC_ID">
                         <?php print AL_MC_ID_listaz() ?>
                     </select>
                 
                     <label for="AL_ALLAS_NEV">ALLAS_NEV</label>
-                    
+                    <br>
                     <input required type="text" name="AL_ALLAS_NEV">
 
-                    
+                    <br>
                     <label for="AL_HELYSZIN">HELYSZIN</label>
-                    
+                    <br>
                     <input required type="text" name="AL_HELYSZIN">
 
-                    
+                    <br>
                     <label for="AL_KAT_ID">KATEGORIA:</label>
-                    
+                    <br>
                     <select required id="AL_KAT_ID" name="AL_KAT_ID">
                         <?php print AL_kategoriat_listaz($row['KAT_ID']) ?>
                     </select>
 
-                    
+                    <br>
                     <label for="AL_MUSZAK">MUSZAK</label>
-                    
+                    <br>
                     <input required type="text" name="AL_MUSZAK">
 
-                    
+                    <br>
                     <label for="AL_LEIRAS">LEIRAS</label>
-                    
+                    <br>
                     <input required type="text" name="AL_LEIRAS">
 
-                    
+                    <br>
                     <input type="submit" id="changeSubmit" value="Insert" name="insert">
                 </form>
 
