@@ -91,6 +91,7 @@ input[type=submit]:hover {
         width: 100vw;
         position: fixed;
         background-color: rgb(39, 24, 99);
+        z-index: 3;
 }
 
 .list {
